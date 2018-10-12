@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-//        Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
 
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         distanceReceiver = new DistanceReceiver(new Handler());
@@ -48,10 +49,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         getLocation();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getLocation();
+    }
+
     @OnClick(R.id.distance_button)
     public void startService() {
         Intent intent = new Intent(MainActivity.this, DistanceService.class);
         intent.putExtra("receiver", distanceReceiver);
+        intent.putExtra("curr_longi", longitude.getText());
+        intent.putExtra("curr_latti", latitude.getText());
         startService(intent);
     }
 
@@ -75,9 +84,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 this.latitude.setText("Unable to find correct location.");
                 this.longitude.setText("Unable to find correct location. ");
             }
-        }
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, this);
+        }
     }
 
     @Override
@@ -86,8 +95,24 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         switch (requestCode) {
             case REQUEST_LOCATION:
-                getLocation();
+                if (grantResults.length > 0) {
+                    // Validate the permissions result
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // All good
+                    } else {
+                        // Close your app
+                        closeNow();
+                    }
+                }
                 break;
+        }
+    }
+
+    private void closeNow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            finishAffinity();
+        } else {
+            finish();
         }
     }
 
