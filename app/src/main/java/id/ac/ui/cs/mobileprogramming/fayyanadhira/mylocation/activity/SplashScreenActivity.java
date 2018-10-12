@@ -1,9 +1,14 @@
-package id.ac.ui.cs.mobileprogramming.fayyanadhira.mylocation;
+package id.ac.ui.cs.mobileprogramming.fayyanadhira.mylocation.activity;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import id.ac.ui.cs.mobileprogramming.fayyanadhira.mylocation.R;
+
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -13,7 +18,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
+        Fabric.with(this, new Crashlytics());
 
         ssHandler.postDelayed(new Runnable() {
             @Override

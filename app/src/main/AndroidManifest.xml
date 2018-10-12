@@ -13,9 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
         </activity>
-        <activity android:name=".SplashScreenActivity"
+        <activity android:name=".activity.SplashScreenActivity"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".service.DistanceService"
+            android:exported="false" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="87eef926ecbd0a3aa8eaeb5de844e52a6d36456b"
+            />
     </application>
-
 </manifest>
