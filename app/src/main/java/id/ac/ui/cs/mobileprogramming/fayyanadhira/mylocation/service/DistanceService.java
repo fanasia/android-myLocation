@@ -24,34 +24,33 @@ public class DistanceService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         final ResultReceiver receiver = intent.getParcelableExtra("receiver");
-        String curr_longi = intent.getStringExtra("curr_longi");
-        String curr_latti = intent.getStringExtra("curr_latti");
-
-        Double current_longi = Double.parseDouble(curr_longi.split(" ")[1]);
-        Double current_latti = Double.parseDouble(curr_latti.split(" ")[1]);
-
-        int[] options = {1,2,3};
-        int rand = getRandom(options);
-
+        String curr_longi = intent.getStringExtra("curr_longi").split(" ")[1];
+        String curr_latti = intent.getStringExtra("curr_latti").split(" ")[1];
         String result = "";
         Bundle bundle = new Bundle();
 
-        switch(rand) {
-            case 1:
-                double distanceParis = getDistanceFromLatLonInKm(current_latti, current_longi, 48.84, 2.35);
-                result = "You are " + String.format("%.2f", distanceParis) + " km away from Paris!";
-                break;
-            case 2:
-                double distanceLondon = getDistanceFromLatLonInKm(current_latti, current_longi, 51.50, 0.12);
-                result = "London is just " + String.format("%.2f", distanceLondon) + " km away from you!";
-                break;
-            case 3:
-                double distanceNewYork = getDistanceFromLatLonInKm(current_latti, current_longi, 40.71, 74.00);
-                result = String.format("%.2f", distanceNewYork) + " km is the distance between you and New York!";
-                break;
-        }
-
         try {
+            Double current_longi = Double.parseDouble(curr_longi);
+            Double current_latti = Double.parseDouble(curr_latti);
+
+            int[] options = {1,2,3};
+            int rand = getRandom(options);
+
+            switch(rand) {
+                case 1:
+                    double distanceParis = getDistanceFromLatLonInKm(current_latti, current_longi, 48.84, 2.35);
+                    result = "You are " + String.format("%.2f", distanceParis) + " km away from Paris!";
+                    break;
+                case 2:
+                    double distanceLondon = getDistanceFromLatLonInKm(current_latti, current_longi, 51.50, 0.12);
+                    result = "London is just " + String.format("%.2f", distanceLondon) + " km away from you!";
+                    break;
+                case 3:
+                    double distanceNewYork = getDistanceFromLatLonInKm(current_latti, current_longi, 40.71, 74.00);
+                    result = String.format("%.2f", distanceNewYork) + " km is the distance between you and New York!";
+                    break;
+            }
+
             Thread.sleep(5000);
             bundle.putString("result", result);
             receiver.send(SUCCESS_CODE, bundle);

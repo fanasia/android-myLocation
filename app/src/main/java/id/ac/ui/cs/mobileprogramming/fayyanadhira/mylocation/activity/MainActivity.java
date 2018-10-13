@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             switch (resultCode) {
                 case 0 :
-                    Toast.makeText(getApplicationContext(), "Error in sleep", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error in count distance", Toast.LENGTH_SHORT).show();
                     break;
                 case 1 :
                     Toast.makeText(getApplicationContext(), resultData.getString("result"), Toast.LENGTH_SHORT).show();
